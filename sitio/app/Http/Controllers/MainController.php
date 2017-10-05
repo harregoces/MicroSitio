@@ -34,7 +34,7 @@ class MainController extends Controller
         $google_client->setClientSecret('-bFJBmY-EhckJDplREV33vU9');
         $google_client->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].'/installplugincallbackgtm/');
         $google_client->addScope(\Google_Service_TagManager::TAGMANAGER_READONLY);
-
+        $google_client->setAccessType('offline');
         $auth_url = $google_client->createAuthUrl();
         header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
         exit;
@@ -48,7 +48,7 @@ class MainController extends Controller
         $google_client->setClientSecret('-bFJBmY-EhckJDplREV33vU9');
         $google_client->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].'/installplugincallbackga/');
         $google_client->addScope(\Google_Service_Analytics::ANALYTICS_READONLY);
-
+        $google_client->setAccessType('offline');
         $auth_url = $google_client->createAuthUrl();
         header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
         exit;
@@ -75,6 +75,15 @@ class MainController extends Controller
         $idcliente = $request->cookie('idcliente');
         $ga_code = $code;
 
+
+        $client = new \Google_Client();
+        $client->setApplicationName('Web client OAuth');
+        $client->setClientId('349982058915-lqccda1kbqmdstrn6nm50b0qdhk8pr2q.apps.googleusercontent.com');
+        $client->setClientSecret('-bFJBmY-EhckJDplREV33vU9');
+        $client->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].'/installplugincallbackga/');
+        $client->setAccessType('offline');
+        $ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
+
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
 
         if(!$task) {
@@ -85,4 +94,7 @@ class MainController extends Controller
 
         return \Redirect::to('/idcliente/'.$idcliente);
     }
+
+
+
 }
