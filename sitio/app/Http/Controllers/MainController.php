@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Google;
 use App\Http\Controllers\Controller;
 use App\task;
 use Illuminate\Http\Request;
@@ -28,36 +29,25 @@ class MainController extends Controller
 
     public function installPlugingtm(Request $request)
     {
-        $google_client = new \Google_Client();
-        $google_client->setApplicationName('Web client OAuth');
-        $google_client->setClientId('349982058915-lqccda1kbqmdstrn6nm50b0qdhk8pr2q.apps.googleusercontent.com');
-        $google_client->setClientSecret('-bFJBmY-EhckJDplREV33vU9');
-        $google_client->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].'/installplugincallbackgtm/');
-        $google_client->addScope(\Google_Service_TagManager::TAGMANAGER_READONLY);
-        $google_client->setAccessType('offline');
-        $auth_url = $google_client->createAuthUrl();
+        $client = Google::gtmClient();
+        $auth_url = $client->createAuthUrl();
         header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
         exit;
     }
 
     public function installPluginga(Request $request)
     {
-        $google_client = new \Google_Client();
-        $google_client->setApplicationName('Web client OAuth');
-        $google_client->setClientId('349982058915-lqccda1kbqmdstrn6nm50b0qdhk8pr2q.apps.googleusercontent.com');
-        $google_client->setClientSecret('-bFJBmY-EhckJDplREV33vU9');
-        $google_client->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].'/installplugincallbackga/');
-        $google_client->addScope(\Google_Service_Analytics::ANALYTICS_READONLY);
-        $google_client->setAccessType('offline');
-        $auth_url = $google_client->createAuthUrl();
+        $client = Google::gaClient();
+        $auth_url = $client->createAuthUrl();
         header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
         exit;
     }
 
     public function callbackPlugingtm(Request $request) {
-        $code = $_GET['code'];
+        $gtm_code = $_GET['code'];
         $idcliente = $request->cookie('idcliente');
-        $gtm_code = $code;
+        $client = Google::gtmClient();
+        $gtm_code = json_encode($client->fetchAccessTokenWithAuthCode($gtm_code)) ;
 
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
 
@@ -67,21 +57,19 @@ class MainController extends Controller
             DB::update('update tasks set gtm_code = ? where idcliente = ?', [$gtm_code,$idcliente]);
         }
 
-        return \Redirect::to('/idcliente/'.$idcliente);
+        $redirect = \Redirect::to('/merchantid/'.$idcliente);
+        $url = \Session::get('session_url');
+        if($url) {
+            $redirect = \Redirect::to($url);
+        }
+
+        return $redirect;
     }
 
     public function callbackPluginga(Request $request) {
-        $code = $_GET['code'];
+        $ga_code = $_GET['code'];
         $idcliente = $request->cookie('idcliente');
-        $ga_code = $code;
-
-
-        $client = new \Google_Client();
-        $client->setApplicationName('Web client OAuth');
-        $client->setClientId('349982058915-lqccda1kbqmdstrn6nm50b0qdhk8pr2q.apps.googleusercontent.com');
-        $client->setClientSecret('-bFJBmY-EhckJDplREV33vU9');
-        $client->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].'/installplugincallbackga/');
-        $client->setAccessType('offline');
+        $client = Google::gaClient();
         $ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
 
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
@@ -92,7 +80,13 @@ class MainController extends Controller
             DB::update('update tasks set ga_code = ? where idcliente = ?', [$ga_code,$idcliente]);
         }
 
-        return \Redirect::to('/idcliente/'.$idcliente);
+        $redirect = \Redirect::to('/merchantid/'.$idcliente);
+        $url = \Session::get('session_url');
+        if($url) {
+            $redirect = \Redirect::to($url);
+        }
+
+        return $redirect;
     }
 
 
