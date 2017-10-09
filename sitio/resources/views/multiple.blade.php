@@ -40,7 +40,7 @@
          */
         gapi.analytics.auth.authorize({
             'serverAuth': {
-                'access_token': "{{$task->ga_code}}"
+                'access_token': "{{$token}}"
             }
         });
 

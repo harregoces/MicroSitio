@@ -19,12 +19,9 @@ class MainController extends Controller
      */
     public function index(Request $request, $idcliente)
     {
-        //check if the user has the GTM installed
+        \Session::put('idcliente',$idcliente);
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
-
-        $response = new \Illuminate\Http\Response(view('welcome')->with('task',$task));
-        $response->withCookie(cookie('idcliente', $idcliente, 450000));
-        return $response;
+        return view('welcome')->with('task',$task);
     }
 
     public function installPlugingtm(Request $request)
@@ -37,16 +34,26 @@ class MainController extends Controller
 
     public function installPluginga(Request $request)
     {
+        return view('installPluginga');
+    }
+
+    public function installPluginga2(Request $request)
+    {
+        $trackingid = $request->get('trackingid');
+        \Session::put('trackingid',$trackingid);
+
         $client = Google::gaClient();
         $auth_url = $client->createAuthUrl();
         header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
         exit;
     }
 
+
     public function callbackPlugingtm(Request $request) {
         $gtm_code = $_GET['code'];
         $idcliente = $request->cookie('idcliente');
         $client = Google::gtmClient();
+        \Session::put('gtm_code',$gtm_code);
         $gtm_code = json_encode($client->fetchAccessTokenWithAuthCode($gtm_code)) ;
 
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
@@ -57,11 +64,7 @@ class MainController extends Controller
             DB::update('update tasks set gtm_code = ? where idcliente = ?', [$gtm_code,$idcliente]);
         }
 
-        $redirect = \Redirect::to('/merchantid/'.$idcliente);
-        $url = \Session::get('session_url');
-        if($url) {
-            $redirect = \Redirect::to($url);
-        }
+        $redirect = \Redirect::to('/installplugingtm2');
 
         return $redirect;
     }
@@ -71,6 +74,7 @@ class MainController extends Controller
         $idcliente = $request->cookie('idcliente');
         $client = Google::gaClient();
         $ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
+        $trackingid = \Session::get('trackingid');
 
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
 
@@ -79,6 +83,12 @@ class MainController extends Controller
         } else {
             DB::update('update tasks set ga_code = ? where idcliente = ?', [$ga_code,$idcliente]);
         }
+
+        //insert in the GTM
+        $clientGTM = Google::gtmClient();
+        $clientGTM = Google::autorizacionCode($clientGTM, $idcliente, 'gtm_code', $task->gtm_code);
+        Google::getGTMGoogleAnalyticsTag($clientGTM, $trackingid, json_decode($task->gtmaccount));
+
 
         $redirect = \Redirect::to('/merchantid/'.$idcliente);
         $url = \Session::get('session_url');
@@ -90,5 +100,31 @@ class MainController extends Controller
     }
 
 
+
+    public function installPlugingtm2(Request $request)
+    {
+        $idcliente = \Session::get('idcliente');
+        $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+        $client = Google::gtmClient();
+        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
+        $accounts = Google::getAccountGTM($client);
+        return view('installplugingtm2')->with('accounts',$accounts);
+    }
+
+    public function installPlugingtm3(Request $request)
+    {
+        $gtmaccount = $request->get('gtmaccount');
+        $idcliente = \Session::get('idcliente');
+        $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+        $client = Google::gtmClient();
+        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
+
+        //get the account
+        $account = Google::getContainerGTM($client, $gtmaccount);
+        DB::update('update tasks set gtmaccount = ? where idcliente = ?', [json_encode($account),$idcliente]);
+
+        $redirect = \Redirect::to('/merchantid/'.$idcliente);
+        return $redirect;
+    }
 
 }
