@@ -16,6 +16,12 @@ CREATE TABLE `tasks` (
 Archivo : sitio/config/database.php
 Linea 43
 
-3) acceder a la URL
+3) redireccionar el host
+127.0.0.1       micrositio.com
+
+
+
+
+4) acceder a la URL
 localhost/merchantid/{merchantid}
 
