@@ -18,6 +18,7 @@ class CreateTasksTable extends Migration
             $table->integer('idcliente')->unique();
             $table->text('gtm_code');
             $table->text('ga_code');
+            $table->text('gtmaccount');
             $table->timestamps();
         });
     }

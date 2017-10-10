@@ -1,27 +1,44 @@
-1) crear la tabla
+1) install composer
+https://getcomposer.org/download/
 
-CREATE TABLE `tasks` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `idcliente` int(11) NOT NULL,
-  `gtm_code` text COLLATE utf8mb4_unicode_ci,
-  `ga_code` text COLLATE utf8mb4_unicode_ci,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `gtmaccount` text COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `tasks_idcliente_unique` (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+2) instalar in instalador de laravel
+composer global require "laravel/installer"
 
-2) colocar las credenciales de acceso en
+3) clonar el sitio
+git clone https://github.com/harregoces/MicroSitio.git
+
+4) en la linea de comando acceder al directorio /sitio y ejecutar
+composer install
+
+5) crear la tabla
+php artisan migrate
+
+6) colocar las credenciales de acceso en
 Archivo : sitio/config/database.php
 Linea 43
 
-3) redireccionar el host
+y colocar las mismas credenciales de BD en el archivo .env
+
+
+7) redireccionar el host
 127.0.0.1       micrositio.com
 
+8) setear el VHOST
+<VirtualHost *:80>
 
+    DocumentRoot "MicroSitio\sitio"
+    <Directory "MicroSitio\sitio">
+        Options +Indexes +FollowSymLinks
+        DirectoryIndex index.php
+        Order allow,deny
+        Allow from all
+        AllowOverride All
+    </Directory>
 
+    ServerName micrositio2.com:80
 
-4) acceder a la URL
+</VirtualHost>
+
+9) acceder a la URL
 localhost/merchantid/{merchantid}
-
+localhost/merchantid/172
