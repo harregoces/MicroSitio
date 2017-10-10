@@ -10,14 +10,17 @@ git clone https://github.com/harregoces/MicroSitio.git
 4) en la linea de comando acceder al directorio /sitio y ejecutar
 composer install
 
-5) crear la tabla
-php artisan migrate
-
-6) colocar las credenciales de acceso en
+5) colocar las credenciales de acceso en
 Archivo : sitio/config/database.php
 Linea 43
 
 y colocar las mismas credenciales de BD en el archivo .env
+
+
+
+6) crear la tabla
+php artisan migrate
+
 
 
 7) redireccionar el host
