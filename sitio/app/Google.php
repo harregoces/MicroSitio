@@ -27,6 +27,9 @@ class Google {
         $google_client->setClientId(self::$clientId);
         $google_client->setClientSecret(self::$clientSecret);
         $google_client->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].self::$redirectGTM);
+        $google_client->setIncludeGrantedScopes(true);
+        $google_client->setAccessType('offline');
+        $google_client->setApprovalPrompt("force");
         $google_client->addScope(
             array(
                 \Google_Service_TagManager::TAGMANAGER_READONLY,
@@ -35,8 +38,7 @@ class Google {
                 \Google_Service_TagManager::TAGMANAGER_EDIT_CONTAINERS
             )
         );
-        $google_client->setIncludeGrantedScopes(true);
-        $google_client->setAccessType('offline');
+
         return $google_client;
     }
 
@@ -47,7 +49,9 @@ class Google {
         $google_client->setClientId(self::$clientId);
         $google_client->setClientSecret(self::$clientSecret);
         $google_client->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].self::$redirectGA);
-
+        $google_client->setIncludeGrantedScopes(true);
+        $google_client->setAccessType('offline');
+        $google_client->setApprovalPrompt("force");
         $google_client->addScope(
             array(
                 \Google_Service_Analytics::ANALYTICS_READONLY,
@@ -55,8 +59,7 @@ class Google {
                 \Google_Service_Analytics::ANALYTICS_MANAGE_USERS
             )
         );
-        $google_client->setIncludeGrantedScopes(true);
-        $google_client->setAccessType('offline');
+
         return $google_client;
     }
 
@@ -135,17 +138,17 @@ class Google {
     public static function getGTMGoogleAnalyticsTag(\Google_Client $client, $trackingid, $GTMAccount){
 
         $tag = new \Google_Service_TagManager_Tag();
+        $tag->setPath($GTMAccount->containerPath);
         $tag->setAccountId($GTMAccount->accountId);
         $tag->setContainerId($GTMAccount->containerPath);
+        $tag->setWorkspaceId(1);
+        $tag->setTagId(null);
         $tag->setName("Universal Analytics Tag");
         $tag->setType('ua');
         $tag->setFiringTriggerId(array(self::$TRIGGER_ID_ALL_PAGES));
         $tag->setLiveOnly(false);
         $tag->setFingerprint('1463140767472');
         $tag->setTagFiringOption('oncePerEvent');
-        /*if(!empty($GTMAccount->tag_id->value)) {
-            $tag->setTagId($GTMAccount->tag_id->value);
-        }*/
 
         $parameters = array(
             array(
@@ -203,7 +206,7 @@ class Google {
         $tag->setParameter($parameters);
 
         $service = new \Google_Service_TagManager($client);
-        return $service->accounts_containers_workspaces_tags->create($GTMAccount->containerPath , $tag);
+        return $service->accounts_containers_workspaces_tags->create($GTMAccount->containerPath.'/workspaces/1', $tag);
         //return $service->accounts_containers_tags->create($GTMAccount->containerPath , $GTMAccount->containerId,$tag);
 
     }

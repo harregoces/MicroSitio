@@ -39,8 +39,13 @@ class MainController extends Controller
 
     public function installPluginga2(Request $request)
     {
+        $idcliente = \Session::get('idcliente');
         $trackingid = $request->get('trackingid');
         \Session::put('trackingid',$trackingid);
+
+        //insert in the trackingid
+        DB::update('update tasks set trackingid = ? where idcliente = ?', [$trackingid,$idcliente]);
+
 
         $client = Google::gaClient();
         $auth_url = $client->createAuthUrl();
@@ -51,7 +56,7 @@ class MainController extends Controller
 
     public function callbackPlugingtm(Request $request) {
         $gtm_code = $_GET['code'];
-        $idcliente = $request->cookie('idcliente');
+        $idcliente = \Session::get('idcliente');
         $client = Google::gtmClient();
         \Session::put('gtm_code',$gtm_code);
         $gtm_code = json_encode($client->fetchAccessTokenWithAuthCode($gtm_code)) ;
@@ -69,12 +74,22 @@ class MainController extends Controller
         return $redirect;
     }
 
+    public function testGa(Request $request) {
+        $idcliente = \Session::get('idcliente');
+        $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+
+        //insert in the GTM
+        $clientGTM = Google::gtmClient();
+        $clientGTM = Google::autorizacionCode($clientGTM, $idcliente, 'gtm_code', $task->gtm_code);
+        Google::getGTMGoogleAnalyticsTag($clientGTM, $task->trackingid, json_decode($task->gtmaccount));
+        exit;
+    }
+
     public function callbackPluginga(Request $request) {
         $ga_code = $_GET['code'];
-        $idcliente = $request->cookie('idcliente');
+        $idcliente = \Session::get('idcliente');
         $client = Google::gaClient();
         $ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
-        $trackingid = \Session::get('trackingid');
 
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
 
@@ -87,7 +102,7 @@ class MainController extends Controller
         //insert in the GTM
         $clientGTM = Google::gtmClient();
         $clientGTM = Google::autorizacionCode($clientGTM, $idcliente, 'gtm_code', $task->gtm_code);
-        Google::getGTMGoogleAnalyticsTag($clientGTM, $trackingid, json_decode($task->gtmaccount));
+        Google::getGTMGoogleAnalyticsTag($clientGTM, $task->trackingid, json_decode($task->gtmaccount));
 
 
         $redirect = \Redirect::to('/merchantid/'.$idcliente);

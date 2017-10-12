@@ -16,9 +16,10 @@ class CreateTasksTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('idcliente')->unique();
-            $table->text('gtm_code')->nullable();;
-            $table->text('ga_code')->nullable();;
-            $table->text('gtmaccount')->nullable();;
+            $table->text('gtm_code')->nullable();
+            $table->text('ga_code')->nullable();
+            $table->text('gtmaccount')->nullable();
+            $table->string('trackingid')->nullable();
             $table->timestamps();
         });
     }
