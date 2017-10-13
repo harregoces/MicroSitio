@@ -23,8 +23,5 @@ $ vagrant halt
 * [VirtualBox] VirtualBox is a general-purpose full virtualizer for x86 hardware, targeted at server, desktop and embedded use
 
 
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen.)
-
-
    [Vagrant]: <https://www.vagrantup.com/>
    [VirtualBox]: <https://www.virtualbox.org/>
