@@ -38,7 +38,7 @@ php artisan migrate
         AllowOverride All
     </Directory>
 
-    ServerName micrositio2.com:80
+    ServerName micrositio.com:80
 
 </VirtualHost>
 
