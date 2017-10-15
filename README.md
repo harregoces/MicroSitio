@@ -24,7 +24,7 @@ php artisan migrate
 
 
 7) redireccionar el host
-127.0.0.1       micrositio.com
+192.168.39.103       micrositio.com
 
 8) setear el VHOST
 <VirtualHost *:80>

@@ -70,6 +70,8 @@ apt-fast install -y \
  # memcache.ini
  cp /var/provision/config/php/ext/memcache.ini /etc/php/7.0/mods-available/
 
+ #cp /var/provision/config/php/ext/xdebug.ini /etc/php/7.0/mods-available/
+
  # PHP-FPM
  cp /var/provision/config/php/www_php7.conf /etc/php/7.0/fpm/pool.d/www.conf
 
