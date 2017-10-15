@@ -12,6 +12,8 @@
 */
 use App\Google;
 
+//Route::get('/', 'MainController@home');
+
 Route::get('/', function(){
     return view('error');
 });

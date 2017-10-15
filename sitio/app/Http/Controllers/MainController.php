@@ -17,6 +17,11 @@ class MainController extends Controller
      * @param  int  $id
      * @return Response
      */
+    public function home(Request $request)
+    {
+        return view('home');
+    }
+
     public function index(Request $request, $idcliente)
     {
         \Session::put('idcliente',$idcliente);
