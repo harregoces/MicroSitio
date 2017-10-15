@@ -38,10 +38,10 @@ php artisan migrate
         AllowOverride All
     </Directory>
 
-    ServerName micrositio2.com:80
+    ServerName micrositio.com:80
 
 </VirtualHost>
 
 9) acceder a la URL
-localhost/merchantid/{merchantid}
-localhost/merchantid/172
+http://micrositio.com/merchantid/{merchantid}
+http://micrositio.com/merchantid/172

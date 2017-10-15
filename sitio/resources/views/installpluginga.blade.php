@@ -14,7 +14,7 @@
 
 <div class="container">
 
-    <form action="installpluginga2" method="post">
+    <form action="/installpluginga2" method="post">
         {{ csrf_field() }}
     <fieldset>
         <legend> Por favor proporcione el Tracking ID</legend>
