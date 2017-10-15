@@ -37,6 +37,7 @@ Route::get('/installplugincallbackga', 'MainController@callbackPluginga');
 
 
 
+Route::get('/dashboard/merchantid/{idcliente}/', 'DashboardController@home');
 Route::get('/dashboard/merchantid/{idcliente}/type/{type}', 'DashboardController@selectType');
 
 

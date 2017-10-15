@@ -27,4 +27,8 @@ class DashboardController extends Controller
 
     }
 
+    public function home(Request $request, $idcliente, $type='basic') {
+        return view("dashboardhome")->with('idcliente',$idcliente);
+    }
+
 }
