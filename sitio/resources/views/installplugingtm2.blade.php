@@ -14,13 +14,14 @@
 
 <div class="container">
 
-    <form action="installplugingtm3" method="post">
+    <form action="/installplugingtm3" method="post">
         {{ csrf_field() }}
     <fieldset>
 
         <legend> Seleccione un Contenedor de Google Tag Manager </legend>
 
-    <div >
+    <div>
+
         <select required="" class="js-example-basic-single js-states form-control" name="gtmaccount" id="dropdown">
             <option value ="">Por favor, seleccione una opción</option>
             @foreach ($accounts as $account)
@@ -31,6 +32,12 @@
                 </optgroup>
             @endforeach
         </select>
+
+
+        <select required="" class="js-example-basic-single js-states form-control" name="workspace" id="worspaceDropdown">
+            <option value ="">Por favor, seleccione una cuenta primero</option>
+        </select>
+
     </div>
 
     <div>
@@ -48,7 +55,7 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="{{ asset('public/js/jquery-3.2.1.slim.min.js') }}" ></script>
+<script src="{{ asset('public/js/jquery-3.2.1.min.js') }}" ></script>
 <script src="{{ asset('public/js/popper.min.js') }}" ></script>
 <script src="{{ asset('public/js/bootstrap_js/bootstrap.min.js') }}" ></script>
 <script src="{{ asset('public/plugin/select2/js/select2.full.min.js') }}" ></script>
@@ -61,18 +68,39 @@
             placeholder: 'Por favor, seleccione una opción',
             allowClear: true
         });
-    });
 
-    function formatState (state) {
-        if (!state.id) {
-            return state.text;
-        }
-        var baseUrl = "/user/pages/images/flags";
-        var $state = $(
-                '<span><img src="' + baseUrl + '/' + state.element.value.toLowerCase() + '.png" class="img-flag" /> ' + state.text + '</span>'
-        );
-        return $state;
-    };
+        $('#worspaceDropdown').select2({
+            placeholder: 'Por favor, seleccione una opción',
+            allowClear: true
+        });
+
+        $("#dropdown").on('change',function(){
+
+            var gtmccount = $(this).val();
+
+            $('#worspaceDropdown').empty();
+
+            $('#worspaceDropdown').select2({
+                allowClear: true,
+                ajax: {
+                    type: 'GET',
+                    url: '/getWorspace/gtmaccount/' + gtmccount,
+                    processResults: function (data) {
+                        var data = $.map(data, function (obj) {
+                            obj.id = obj.path;
+                            obj.text = obj.name;
+                            return obj;
+                        });
+
+                        return {
+                            results : data
+                        };
+                    }
+                }
+            });
+
+        });
+    });
 
 </script>
 

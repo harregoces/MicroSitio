@@ -12,6 +12,11 @@
 */
 use App\Google;
 
+Route::get('/', function(){
+    return view('error');
+});
+
+
 Route::get('/merchantid/{idcliente}', 'MainController@index');
 
 
@@ -22,7 +27,6 @@ Route::post('/installplugingtm3','MainController@installPlugingtm3');
 Route::get('/installpluginga','MainController@installPluginga');
 Route::post('/installpluginga2','MainController@installPluginga2');
 Route::get('/installpluginga3','MainController@installPluginga3');
-Route::get('/testga','MainController@testGa');
 
 
 Route::get('/installplugincallbackgtm', 'MainController@callbackPlugingtm');
@@ -30,10 +34,13 @@ Route::get('/installplugincallbackga', 'MainController@callbackPluginga');
 
 
 
+
 Route::get('/dashboard/merchantid/{idcliente}/type/{type}', 'DashboardController@selectType');
 
-Route::get('/test/merchantid/{idcliente}', 'DashboardController@test');
 
+
+Route::get('/test/merchantid/{idcliente}', 'MainController@test');
+Route::get('/getWorspace/gtmaccount/{gtmaccount}', 'MainController@getWorkspace');
 
 
 

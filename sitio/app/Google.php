@@ -135,13 +135,17 @@ class Google {
         return null;
     }
 
-    public static function getGTMGoogleAnalyticsTag(\Google_Client $client, $trackingid, $GTMAccount){
+    public static function getGTMGoogleAnalyticsTag(\Google_Client $client, $trackingid, $GTMAccount,$workspace){
 
         $tag = new \Google_Service_TagManager_Tag();
         $tag->setPath($GTMAccount->containerPath);
         $tag->setAccountId($GTMAccount->accountId);
         $tag->setContainerId($GTMAccount->containerPath);
-        $tag->setWorkspaceId(1);
+
+        $arr = explode("/",$workspace);
+        $wor = end($arr);
+        $tag->setWorkspaceId( $wor );
+
         $tag->setTagId(null);
         $tag->setName("Universal Analytics Tag");
         $tag->setType('ua');
@@ -206,8 +210,18 @@ class Google {
         $tag->setParameter($parameters);
 
         $service = new \Google_Service_TagManager($client);
-        return $service->accounts_containers_workspaces_tags->create($GTMAccount->containerPath.'/workspaces/1', $tag);
-        //return $service->accounts_containers_tags->create($GTMAccount->containerPath , $GTMAccount->containerId,$tag);
+        return $service->accounts_containers_workspaces_tags->create($workspace, $tag);
 
+    }
+
+    public static function getWorkspaceList(\Google_Client $client, $GTMAccount) {
+        $service = new \Google_Service_TagManager($client);
+        $workspaceList = $service->accounts_containers_workspaces->listAccountsContainersWorkspaces($GTMAccount->containerPath);
+        $return = array();
+        foreach($workspaceList->getWorkspace() as $val) {
+            $return[] = array('name' => $val['name'],'path' => $val->path);
+        }
+
+        return $return;
     }
 }
