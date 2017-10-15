@@ -22,6 +22,7 @@
 
     <div>
 
+        GA Account
         <select required="" class="js-example-basic-single js-states form-control" name="gtmaccount" id="dropdown">
             <option value ="">Por favor, seleccione una opción</option>
             @foreach ($accounts as $account)
@@ -33,7 +34,7 @@
             @endforeach
         </select>
 
-
+        Workspace
         <select required="" class="js-example-basic-single js-states form-control" name="workspace" id="worspaceDropdown">
             <option value ="">Por favor, seleccione una cuenta primero</option>
         </select>
