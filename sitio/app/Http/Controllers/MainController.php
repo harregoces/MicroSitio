@@ -17,6 +17,11 @@ class MainController extends Controller
      * @param  int  $id
      * @return Response
      */
+    public function home(Request $request)
+    {
+        return view('home');
+    }
+
     public function index(Request $request, $idcliente)
     {
         \Session::put('idcliente',$idcliente);
@@ -32,21 +37,26 @@ class MainController extends Controller
         exit;
     }
 
-    public function installPluginga(Request $request)
-    {
-        return view('installPluginga');
-    }
-
     public function installPluginga2(Request $request)
     {
         $idcliente = \Session::get('idcliente');
-        $trackingid = $request->get('trackingid');
-        \Session::put('trackingid',$trackingid);
+        $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+        $account = $request->get('account');
+        $property = $request->get('property');
+        $view = $request->get('view');
 
-        //insert in the trackingid
-        DB::update('update tasks set trackingid = ? where idcliente = ?', [$trackingid,$idcliente]);
+        DB::update('update tasks set ga_account = ? , ga_property = ? , ga_view = ? where idcliente = ?', [$account,$property,$view,$idcliente]);
 
+        //create tag
+        $client = Google::gaClient();
+        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
+        Google::getGTMGoogleAnalyticsTag($client, $task->ga_property, json_decode($task->gtmaccount),$task->workspaceid);
 
+        return \Redirect::to('/merchantid/'.$idcliente);
+    }
+
+    public function installPluginga(Request $request)
+    {
         $client = Google::gaClient();
         $auth_url = $client->createAuthUrl();
         header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
@@ -74,15 +84,13 @@ class MainController extends Controller
         return $redirect;
     }
 
-    public function testGa(Request $request) {
-        $idcliente = \Session::get('idcliente');
+    public function test(Request $request,$idcliente) {
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+        $client = Google::gaClient();
+        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
 
-        //insert in the GTM
-        $clientGTM = Google::gtmClient();
-        $clientGTM = Google::autorizacionCode($clientGTM, $idcliente, 'gtm_code', $task->gtm_code);
-        Google::getGTMGoogleAnalyticsTag($clientGTM, $task->trackingid, json_decode($task->gtmaccount));
-        exit;
+        $account = Google::getGaAccounts($client);
+        return view('installPluginga')->with('listAccount',$account);
     }
 
     public function callbackPluginga(Request $request) {
@@ -99,19 +107,9 @@ class MainController extends Controller
             DB::update('update tasks set ga_code = ? where idcliente = ?', [$ga_code,$idcliente]);
         }
 
-        //insert in the GTM
-        $clientGTM = Google::gtmClient();
-        $clientGTM = Google::autorizacionCode($clientGTM, $idcliente, 'gtm_code', $task->gtm_code);
-        Google::getGTMGoogleAnalyticsTag($clientGTM, $task->trackingid, json_decode($task->gtmaccount));
-
-
-        $redirect = \Redirect::to('/merchantid/'.$idcliente);
-        $url = \Session::get('session_url');
-        if($url) {
-            $redirect = \Redirect::to($url);
-        }
-
-        return $redirect;
+        //get the trackings id or account
+        $account = Google::getGaAccounts($client);
+        return view('installPluginga')->with('listAccount',$account);
     }
 
 
@@ -129,6 +127,7 @@ class MainController extends Controller
     public function installPlugingtm3(Request $request)
     {
         $gtmaccount = $request->get('gtmaccount');
+        $workspaceid = $request->get('workspace');
         $idcliente = \Session::get('idcliente');
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
         $client = Google::gtmClient();
@@ -136,10 +135,38 @@ class MainController extends Controller
 
         //get the account
         $account = Google::getContainerGTM($client, $gtmaccount);
-        DB::update('update tasks set gtmaccount = ? where idcliente = ?', [json_encode($account),$idcliente]);
+        DB::update('update tasks set gtmaccount = ? , workspaceid = ? where idcliente = ?', [json_encode($account),$workspaceid, $idcliente]);
 
         $redirect = \Redirect::to('/merchantid/'.$idcliente);
         return $redirect;
+    }
+
+    public function getWorkspace(Request $request,$gtmaccount) {
+        $idcliente = \Session::get('idcliente');
+        $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+        $client = Google::gtmClient();
+        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
+        $account = (object) Google::getContainerGTM($client, $gtmaccount);
+        $w = Google::getWorkspaceList($client,$account);
+        return response()->json($w,200);
+    }
+
+    public function getProperty(Request $request,$account) {
+        $idcliente = \Session::get('idcliente');
+        $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+        $client = Google::gaClient();
+        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
+        $listProperty = Google::getPropertyGA($client, $account);
+        return response()->json($listProperty,200);
+    }
+
+    public function getView(Request $request,$account, $property) {
+        $idcliente = \Session::get('idcliente');
+        $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+        $client = Google::gaClient();
+        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
+        $listView = Google::getViewGA($client, $account,$property);
+        return response()->json($listView,200);
     }
 
 }

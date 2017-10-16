@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
 
         if(!$task)
-            return \Redirect::to('/idcliente/'.$idcliente);
+            return \Redirect::to('/merchantid/'.$idcliente);
 
         $client = Google::gtmClient();
         $client = Google::autorizacionCode($client, $idcliente, 'ga_code', $task->ga_code);
@@ -27,20 +27,8 @@ class DashboardController extends Controller
 
     }
 
-    public function test(Request $request, $idcliente) {
-        $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
-
-        if(!$task)
-            return \Redirect::to('/idcliente/'.$idcliente);
-
-        $client = Google::gtmClient();
-        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
-        $listAccount = Google::getAccountGTM($client);
-        var_dump($listAccount);
-        foreach($listAccount as $key => $val) {
-            dd($val);
-        }
-        exit;
+    public function home(Request $request, $idcliente, $type='basic') {
+        return view("dashboardhome")->with('idcliente',$idcliente);
     }
 
 }

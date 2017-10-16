@@ -72,16 +72,13 @@ class Google {
         $token = $client->getAccessToken();
 
         if ($client->isAccessTokenExpired() ) {
-            if($client->getRefreshToken())
-                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-            else {
-                $my_code = \Session::get('gtm_code');
-                $client->fetchAccessTokenWithAuthCode($my_code);
+            $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+
+            if( isset($client->getAccessToken()->access_token) ) {
+                $code = json_encode($client->getAccessToken());
+                DB::update('update tasks set '.$field.' = ? where idcliente = ?', [$code,$idcliente]);
             }
 
-
-            $code = json_encode($client->getAccessToken());
-            DB::update('update tasks set '.$field.' = ? where idcliente = ?', [$code,$idcliente]);
 
         }
         return $client;
@@ -114,7 +111,6 @@ class Google {
         return $result;
     }
 
-
     public static function getContainerGTM(\Google_Client $client, $gtmaccount) {
         $TGMclient = new \Google_Service_TagManager($client);
         $listAccount = $TGMclient->accounts->listAccounts();
@@ -135,13 +131,27 @@ class Google {
         return null;
     }
 
-    public static function getGTMGoogleAnalyticsTag(\Google_Client $client, $trackingid, $GTMAccount){
+    public static function getGaAccounts(\Google_Client $client) {
+        $analytic = new \Google_Service_Analytics($client);
+        $list = $analytic->management_accounts->listManagementAccounts();
+        $return = array();
+        foreach($list->getItems() as $val) {
+            $return[] = array('id' => $val->getId(), 'name' => $val->getName()  );
+        }
+        return $return;
+    }
+
+    public static function getGTMGoogleAnalyticsTag(\Google_Client $client, $trackingid, $GTMAccount,$workspace){
 
         $tag = new \Google_Service_TagManager_Tag();
         $tag->setPath($GTMAccount->containerPath);
         $tag->setAccountId($GTMAccount->accountId);
         $tag->setContainerId($GTMAccount->containerPath);
-        $tag->setWorkspaceId(1);
+
+        $arr = explode("/",$workspace);
+        $wor = end($arr);
+        $tag->setWorkspaceId( $wor );
+
         $tag->setTagId(null);
         $tag->setName("Universal Analytics Tag");
         $tag->setType('ua');
@@ -206,8 +216,39 @@ class Google {
         $tag->setParameter($parameters);
 
         $service = new \Google_Service_TagManager($client);
-        return $service->accounts_containers_workspaces_tags->create($GTMAccount->containerPath.'/workspaces/1', $tag);
-        //return $service->accounts_containers_tags->create($GTMAccount->containerPath , $GTMAccount->containerId,$tag);
+        return $service->accounts_containers_workspaces_tags->create($workspace, $tag);
 
     }
+
+    public static function getWorkspaceList(\Google_Client $client, $GTMAccount) {
+        $service = new \Google_Service_TagManager($client);
+        $workspaceList = $service->accounts_containers_workspaces->listAccountsContainersWorkspaces($GTMAccount->containerPath);
+        $return = array();
+        foreach($workspaceList->getWorkspace() as $val) {
+            $return[] = array('name' => $val['name'],'path' => $val->path);
+        }
+
+        return $return;
+    }
+
+    public static function getPropertyGA(\Google_Client $client, $account) {
+        $analytic = new \Google_Service_Analytics($client);
+        $list = $analytic->management_webproperties->listManagementWebproperties($account);
+        $return = array();
+        foreach($list->getItems() as $val) {
+            $return[] = array('id' => $val->getId(), 'name' => $val->getName()  );
+        }
+        return $return;
+    }
+
+    public static function getViewGA(\Google_Client $client, $account, $property) {
+        $analytic = new \Google_Service_Analytics($client);
+        $list = $analytic->management_profiles->listManagementProfiles($account,$property);
+        $return = array();
+        foreach($list->getItems() as $val) {
+            $return[] = array('id' => $val->getId(), 'name' => $val->getName()  );
+        }
+        return $return;
+    }
+
 }
