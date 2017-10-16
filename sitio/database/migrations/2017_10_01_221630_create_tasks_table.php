@@ -19,8 +19,10 @@ class CreateTasksTable extends Migration
             $table->text('gtm_code')->nullable();
             $table->text('ga_code')->nullable();
             $table->text('gtmaccount')->nullable();
-            $table->string('trackingid')->nullable();
             $table->string('workspaceid')->nullable();
+            $table->string('ga_account')->nullable();
+            $table->string('ga_property')->nullable();
+            $table->string('ga_view')->nullable();
             $table->timestamps();
         });
     }

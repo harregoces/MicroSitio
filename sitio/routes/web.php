@@ -45,6 +45,8 @@ Route::get('/dashboard/merchantid/{idcliente}/type/{type}', 'DashboardController
 Route::get('/test/merchantid/{idcliente}', 'MainController@test');
 Route::get('/getWorspace/gtmaccount/{gtmaccount}', 'MainController@getWorkspace');
 
+Route::get('/getProperty/account/{account}', 'MainController@getProperty');
+Route::get('/getView/account/{account}/property/{property}', 'MainController@getView');
 
 
 

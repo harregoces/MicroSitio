@@ -1,0 +1,532 @@
+## NGINX DEFAULT CONFIGURATION FILE ##
+
+log_format main '[$time_local] $remote_addr $host "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for"';
+
+server {
+	listen   80 default;
+
+	server_name  localhost;
+	sendfile       off;
+
+	access_log  /var/log/nginx/localhost.access.log main;
+
+
+	root /var/www/html;
+	index  index.php index.html index.htm;
+
+	proxy_set_header X-Real-IP  $remote_addr;
+	proxy_set_header Host $host;
+	#proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+	client_max_body_size 50M;
+
+	## Redirects
+
+	if ($request_uri ~* ^/editorials/(.*)) {
+			 rewrite ^/editorials/(.*)$ http://editorials.pollini.com/$1;
+	}
+
+	if ($host ~ ^zerogrey\.com) {
+		rewrite ^/.* http://www.zerogrey.com permanent;
+	}
+	if ($host ~ ^zerogray\.com) {
+			rewrite ^/.* http://www.zerogrey.com permanent;
+	}
+	if ($host ~ ^www.zerogray\.com) {
+			rewrite ^/.* http://www.zerogrey.com permanent;
+	}
+	if ($host ~* ^zerogray\.it) {
+			rewrite ^/.* http://www.zerogrey.com permanent;
+	}
+	if ($host ~* ^www.zerogray\.it) {
+			rewrite ^/.* http://www.zerogrey.com permanent;
+	}
+	if ($host ~* ^zerogrey\.it) {
+			rewrite ^/.* http://www.zerogrey.com permanent;
+	}
+	if ($host ~* ^www.zerogrey\.it) {
+			rewrite ^/.* http://www.zerogrey.com permanent;
+	}
+	if ($host ~* shop\.salewa\.it) {
+			rewrite ^(.*)$ http://shop.salewa.com$1 permanent;
+	}
+	if ($host ~* ^visionnaireshop\.com) {
+			rewrite ^(.*)$ http://www.visionnaireshop.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.at) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.be) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.co\.uk) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.es) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.eu) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.lu) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.net) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.nl) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.org) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.se) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.dk) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.it) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.fr) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.ie) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianas-store\.co$) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaiana-shop\.de) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaiana-shop\.net) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianashop\.de) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianashop\.net) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.at) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.be) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.co\.uk) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.es) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.eu) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.lu) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.net) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.nl) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.org) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.se) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* my-havaiana\.de) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* my-havaianas\.com) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* my-havaianas\.de) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* myhavaiana\.de) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* myhavaianas\.com) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasnews\.com) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.dk) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.it) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.fr) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* havaianasstore\.ie) {
+			rewrite ^(.*)$ http://www.havaianas-store.com$1 permanent;
+	}
+
+	if ($host ~* ^italiaindependent\.com) {
+			rewrite ^(.*)$ http://www.italiaindependent.com$1 permanent;
+	}
+
+	if ($host ~* salewa-shop\.de) {
+			rewrite ^(.*)$ http://shop.salewa.com$1 permanent;
+	}
+
+	if ($host ~ www\.tattoo\.carpisa\.it) {
+			rewrite ^(.*)$ http://tattoo.carpisa.it$1 permanent;
+	}
+
+	if ($host ~ shop\.pollini\.com) {
+			rewrite ^(.*)$ http://www.pollini.com$1 permanent;
+	}
+
+	if ($host ~* ^yamamay\.es) {
+			rewrite ^(.*)$ http://www.yamamay.com$1 permanent;
+	}
+
+	if ($host ~ www\.yamamay\.es) {
+			rewrite ^(.*)$ http://www.yamamay.com$1 permanent;
+	}
+
+	if ($host ~* ^yamamay\.com) {
+			rewrite ^(.*)$ http://www.yamamay.com$1 permanent;
+	}
+
+	if ($host ~ www\.yamamay\.it) {
+			rewrite ^(.*)$ http://www.yamamay.com permanent;
+	}
+
+	if ($host ~* ^yamamay\.it) {
+			rewrite ^(.*)$ http://www.yamamay.com permanent;
+	}
+
+	if ($host ~ shop\.yamamay\.com) {
+			rewrite ^(.*)$ http://www.yamamay.com$1 permanent;
+	}
+
+	if ($host ~* ^pollini\.com) {
+			rewrite ^(.*)$ http://www.pollini.com$1 permanent;
+	}
+
+	if ($host ~* ^carpisa\.it) {
+			rewrite ^(.*)$ http://www.carpisa.it$1 permanent;
+	}
+
+	if ($host ~* ^m\.carpisa\.it) {
+		   rewrite ^(.*)$ http://www.carpisa.it$1 permanent;
+	}
+
+    # sitemap.xml
+    if ($request_filename ~ sitemap.xml) {
+        rewrite ^(.*)$ /sitemap.php last;
+    }
+    # robots.txt
+    if ($request_filename ~ robots.txt) {
+        rewrite ^(.*)$ /robots.php last;
+    }
+
+	location ~ /\.git {
+		deny all;
+	}
+
+	location ~ ^/upload/(.*)$ {
+        root /;
+        try_files /zgshared/development/code/www/upload/$1 @upload_fallback;
+    }
+
+    location @upload_fallback {
+        rewrite ^/upload/(.*) /upload_fallback/$1;
+    }
+
+    location ~ ^/upload_fallback/(.*)$ {
+        proxy_pass http://www.zerogrey.com/upload/$1;
+        resolver 8.8.8.8;
+        proxy_redirect off;
+        proxy_intercept_errors on;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+	location ~ ^/download/(.*)$ {
+		alias /zgshared/development/code/www/download/$1;
+	}
+
+	location ~ ^/upload_no_sync/(.*)$ {
+		alias /zgshared/development/code/www/upload_no_sync/$1;
+	}
+
+	location ~ ^/themes/.+\.php {
+		fastcgi_pass   backend;
+		fastcgi_index  index.php;
+		fastcgi_split_path_info ^(.+\.php)(.*)$;
+        fastcgi_param SCRIPT_FILENAME /zgshared/development$fastcgi_script_name;
+		fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param PATH_TRANSLATED /zgshared/development$fastcgi_path_info;
+		fastcgi_param PHP_VALUE  "include_path=.:/usr/share/php:/usr/share/pear:/zgshared/seagull/lib/pear";
+		include /etc/nginx/fastcgi_params;
+		fastcgi_param SERVER_NAME $host;
+		fastcgi_param HTTP_X_FORWARDED_FOR $remote_addr;
+		fastcgi_intercept_errors		on;
+		fastcgi_ignore_client_abort	 off;
+		fastcgi_connect_timeout 180;	    # was 120
+		fastcgi_send_timeout 180;	        # 180
+		fastcgi_read_timeout 180;	        # 180
+		fastcgi_buffer_size 512k;			# ex 128
+		fastcgi_buffers 4 1024k;			# ex 256
+		fastcgi_busy_buffers_size 1024k;	# ex 256
+		fastcgi_temp_file_write_size 1024k; # ex 256
+	}
+
+	location ~ ^/themes/(.*)$ {
+		alias /zgshared/development/themes/$1;
+	}
+
+
+	location / {
+		try_files $uri $uri/ /index.php?q=$uri&$args;
+	}
+
+	location =/nginx_status {
+		stub_status on;
+		access_log off;
+		allow 127.0.0.1;
+		allow 192.168.100.0/24;
+		allow 192.168.56.0/24;
+		deny all;
+	}
+
+    location ~* \.(js|css)$ {
+		expires off;
+		access_log off;
+	}
+
+	location ~* \.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|ico)$ {
+		expires 30d;
+		access_log off;
+        #access_log  /var/log/nginx/static.access.log main;
+	}
+
+	location ~* \.(eot|otf|ttf|woff)$ {
+		add_header Access-Control-Allow-Origin *;
+	}
+
+	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+	#
+	location ~ ^.+\.php {
+
+		if (!-f $request_filename) {
+			rewrite ^(.*)$ /index.php last;
+		}
+
+		fastcgi_pass   backend;
+		fastcgi_index  index.php;
+		fastcgi_split_path_info ^(.+\.php)(.*)$;
+		fastcgi_param SCRIPT_FILENAME /zgshared/development/code/www$fastcgi_script_name;
+		fastcgi_param PATH_INFO $fastcgi_path_info;
+		fastcgi_param PATH_TRANSLATED /zgshared/development/code/www$fastcgi_path_info;
+		fastcgi_param PHP_VALUE  "include_path=.:/usr/share/php:/usr/share/pear:/zgshared/development/code/include/lib/pear";
+		include /etc/nginx/fastcgi_params;
+		fastcgi_param SERVER_NAME $host;
+		fastcgi_param HTTP_X_FORWARDED_FOR $remote_addr;
+		fastcgi_intercept_errors		on;
+		fastcgi_ignore_client_abort	 off;
+		fastcgi_connect_timeout 600;	# was 120
+		fastcgi_send_timeout 600;   # 180
+		fastcgi_read_timeout 600;   # 180
+		fastcgi_buffer_size 512k;	   # ex 128
+		fastcgi_buffers 4 1024k;		# ex 256
+		fastcgi_busy_buffers_size 1024k;		# ex 256
+		fastcgi_temp_file_write_size 1024k; # ex 256
+	}
+
+
+	# deny access to .htaccess files, if Apache's document root
+	# concurs with nginx's one
+	#
+	location ~ /\.ht {
+		deny  all;
+	}
+}
+
+upstream backend {
+	server unix:/var/run/php5-fpm.sock;
+}
+
+
+# HTTPS server
+#
+server {
+    listen   443;
+    listen   11295;
+    listen   11297;
+    listen   11298;
+    listen   11299;
+
+    server_name  localhost;
+    sendfile       off;
+
+	access_log /var/log/nginx/localhost.ssl.access.log main;
+	error_log /var/log/nginx/ssl.error.log;
+
+	root /zgshared/development/code/www;
+	index  index.php index.html index.htm;
+
+	proxy_set_header X-Real-IP  $remote_addr;
+	proxy_set_header Host $host;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+	ssl on;
+	ssl_certificate /etc/nginx/ssl/securecc.zerogrey.com_all.crt;
+	ssl_certificate_key /etc/nginx/ssl/securecc.zerogrey.com.key;
+
+	ssl_session_timeout  5m;
+
+    # sitemap.xml
+    if ($request_filename ~ sitemap.xml) {
+        rewrite ^(.*)$ /sitemap.php last;
+    }
+    # robots.txt
+    if ($request_filename ~ robots.txt) {
+        rewrite ^(.*)$ /robots.php last;
+    }
+
+#d  ssl_protocols  SSLv3 TLSv1;
+#d  ssl_ciphers DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:EDH-RSA-DES-CBC3-SHA:AES256-SHA:DES-CBC3-SHA:AES128-SHA:RC4-SHA:RC4-MD5;
+#d  ssl_prefer_server_ciphers   on;
+
+#s  ssl_protocols  SSLv2 SSLv3 TLSv1;
+#s  ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+#s  ssl_prefer_server_ciphers   on;
+
+        location ~ ^/upload/(.*)$ {
+            root /;
+            try_files /zgshared/development/code/www/upload/$1 @upload_fallback;
+        }
+
+        location @upload_fallback {
+            rewrite ^/upload/(.*) /upload_fallback/$1;
+        }
+
+        location ~ ^/upload_fallback/(.*)$ {
+            proxy_pass http://www.zerogrey.com/upload/$1;
+            resolver 8.8.8.8;
+            proxy_redirect off;
+            proxy_intercept_errors on;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
+        location ~ ^/download/(.*)$ {
+            alias /zgshared/development/code/www/download/$1;
+        }
+
+        location ~ ^/upload_no_sync/(.*)$ {
+            alias /zgshared/development/code/www/upload_no_sync/$1;
+        }
+
+        location ~ ^/themes/.+\.php {
+                fastcgi_pass   backend;
+                fastcgi_index  index.php;
+                fastcgi_split_path_info ^(.+\.php)(.*)$;
+                fastcgi_param SCRIPT_FILENAME /zgshared/development$fastcgi_script_name;
+                fastcgi_param PATH_INFO $fastcgi_path_info;
+                fastcgi_param PATH_TRANSLATED /zgshared/development$fastcgi_path_info;
+                include /etc/nginx/fastcgi_params;
+                fastcgi_param PHP_VALUE  "include_path=.:/usr/share/php:/usr/share/pear:/zgshared/development/code/include/lib/pear";
+                fastcgi_param SERVER_NAME $host;
+                fastcgi_param HTTP_X_FORWARDED_FOR $remote_addr;
+                fastcgi_intercept_errors on;
+                fastcgi_ignore_client_abort off;
+                fastcgi_connect_timeout 180;    		# was 120
+                fastcgi_send_timeout 180;       		# 180
+                fastcgi_read_timeout 180;       		# 180
+                fastcgi_buffer_size 512k;               # ex 128
+                fastcgi_buffers 4 1024k;                # ex 256
+                fastcgi_busy_buffers_size 1024k;		# ex 256
+                fastcgi_temp_file_write_size 1024k;		# ex 256
+                fastcgi_param HTTPS on;
+        }
+
+        location ~ ^/themes/(.*)$ {
+            alias /zgshared/development/themes/$1;
+        }
+
+		location / {
+		    try_files $uri $uri/ /index.php?q=$uri&$args;
+		}
+
+		# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+		#
+		location ~ ^.+\.php {
+
+			if (!-f $request_filename) {
+					rewrite ^(.*)$ /index.php last;
+			}
+
+			fastcgi_pass   backend;
+			fastcgi_index  index.php;
+			fastcgi_split_path_info ^(.+\.php)(.*)$;
+			fastcgi_param SCRIPT_FILENAME /zgshared/development/code/www$fastcgi_script_name;
+			fastcgi_param PATH_INFO $fastcgi_path_info;
+			fastcgi_param PATH_TRANSLATED /zgshared/development/code/www$fastcgi_path_info;
+			fastcgi_param PHP_VALUE  "include_path=.:/usr/share/php:/usr/share/pear:/zgshared/development/code/include/lib/pear";
+			include /etc/nginx/fastcgi_params;
+			fastcgi_param SERVER_NAME $host;
+			fastcgi_intercept_errors		on;
+			fastcgi_ignore_client_abort	 off;
+			fastcgi_connect_timeout 100;
+			fastcgi_send_timeout 180;
+			fastcgi_read_timeout 180;
+			fastcgi_buffer_size 128k;
+			fastcgi_buffers 4 256k;
+			fastcgi_busy_buffers_size 256k;
+			fastcgi_temp_file_write_size 256k;
+			fastcgi_param HTTPS on;
+		}
+}

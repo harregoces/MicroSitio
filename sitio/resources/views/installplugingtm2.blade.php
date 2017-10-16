@@ -77,7 +77,7 @@
 
         $("#dropdown").on('change',function(){
 
-            var gtmccount = $(this).val();
+            var gtmaccount = $(this).val();
 
             $('#worspaceDropdown').empty();
 
@@ -85,7 +85,7 @@
                 allowClear: true,
                 ajax: {
                     type: 'GET',
-                    url: '/getWorspace/gtmaccount/' + gtmccount,
+                    url: '/getWorspace/gtmaccount/' + gtmaccount,
                     processResults: function (data) {
                         var data = $.map(data, function (obj) {
                             obj.id = obj.path;
