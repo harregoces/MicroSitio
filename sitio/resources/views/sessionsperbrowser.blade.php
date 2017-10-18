@@ -48,14 +48,14 @@
         /**
          * Create a new ViewSelector instance to be rendered inside of an
          * element with the id "view-selector-container".
-         */
+
         var viewSelector = new gapi.analytics.ViewSelector({
             container: 'view-selector-container'
         });
 
         // Render the view selector to the page.
         viewSelector.execute();
-
+         */
         /**
          * Create a table chart showing top browsers for users to interact with.
          * Clicking on a row in the table will update a second timeline chart with
@@ -63,6 +63,7 @@
          */
         var mainChart = new gapi.analytics.googleCharts.DataChart({
             query: {
+                ids : "ga:{{$task->ga_view}}",
                 'dimensions': 'ga:browser',
                 'metrics': 'ga:sessions',
                 'sort': '-ga:sessions',
@@ -77,6 +78,8 @@
             }
         });
 
+        mainChart.execute();
+
 
         /**
          * Create a timeline chart showing sessions over time for the browser the
@@ -84,6 +87,7 @@
          */
         var breakdownChart = new gapi.analytics.googleCharts.DataChart({
             query: {
+                ids : "ga:{{$task->ga_view}}",
                 'dimensions': 'ga:date',
                 'metrics': 'ga:sessions',
                 'start-date': '7daysAgo',
@@ -109,7 +113,7 @@
 
         /**
          * Update both charts whenever the selected view changes.
-         */
+
         viewSelector.on('change', function(ids) {
             var options = {query: {ids: ids}};
 
@@ -125,7 +129,7 @@
             // Only render the breakdown chart if a browser filter has been set.
             if (breakdownChart.get().query.filters) breakdownChart.execute();
         });
-
+         */
 
         /**
          * Each time the main chart is rendered, add an event listener to it so

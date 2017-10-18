@@ -22,6 +22,7 @@ class DashboardController extends Controller
         $client = Google::gtmClient();
         $client = Google::autorizacionCode($client, $idcliente, 'ga_code', $task->ga_code);
         $token = $client->getAccessToken()['access_token'];
+
         $clientid = Google::$clientId;
         return view($type)->with('task',$task)->with('token',$token)->with('clientid',$clientid);
 
@@ -29,6 +30,10 @@ class DashboardController extends Controller
 
     public function home(Request $request, $idcliente, $type='basic') {
         return view("dashboardhome")->with('idcliente',$idcliente);
+    }
+
+    public function dashboardiframes(Request $request, $idcliente, $type='basic') {
+        return view("dashboardiframes")->with('idcliente',$idcliente);
     }
 
 }
