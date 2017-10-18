@@ -189,3 +189,19 @@ Instale el paquete usando el procedimiento estàndard de su sistema operativo ma
 Para verificar la instalaciòn del sitio web, navegar a la siguiente direcciòn en el browser de preferencia
 http://micrositio.com/merchantid/{merchantid}
 http://micrositio.com/merchantid/172
+
+4. Para leer los datos del google tag manager account se usa la url
+http://micrositio.com/getgtmaccountbyid/{merchantid}
+http://micrositio.com/getgtmaccountbyid/172
+
+5. Para ver las graficas las url deben ser de la siguiente manera
+http://micrositio.com/dashboard/merchantid/{merchantid}/type/{tipo_grafico}
+http://micrositio.com/dashboard/merchantid/172/type/basic
+
+tipos de graficos disponibles
+basic
+multiple
+thirdparty
+tvisualitationc
+wcompmonent
+

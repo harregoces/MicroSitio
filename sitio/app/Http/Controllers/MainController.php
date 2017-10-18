@@ -50,7 +50,7 @@ class MainController extends Controller
         //create tag
         $client = Google::gaClient();
         $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
-        Google::getGTMGoogleAnalyticsTag($client, $task->ga_property, json_decode($task->gtmaccount),$task->workspaceid);
+        Google::getGTMGoogleAnalyticsTag($client, $property, json_decode($task->gtmaccount),$task->workspaceid);
 
         return \Redirect::to('/merchantid/'.$idcliente);
     }

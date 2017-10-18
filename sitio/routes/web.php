@@ -50,11 +50,14 @@ Route::get('/getView/account/{account}/property/{property}', 'MainController@get
 
 
 
+Route::get('/getgtmaccountbyid/{merchantid}', 'GTMController@getGtmAccount');
 
-Route::get('getgtmaccountbyid/{merchantid}', function ($merchantid) {
+/*
+Route::get('/getgtmaccountbyid/{merchantid}', function ($merchantid) {
 
     $arr = json_encode(array('Hello World','otro'));
     return response($arr, 200)
         ->header('Content-Type', 'application/json')
         ;
 });
+*/

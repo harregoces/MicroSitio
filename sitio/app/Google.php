@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class Google {
 
     private static $applicationName  = 'Web client OAuth';
-    private static $clientId = '349982058915-lqccda1kbqmdstrn6nm50b0qdhk8pr2q.apps.googleusercontent.com';
+    public static $clientId = '349982058915-lqccda1kbqmdstrn6nm50b0qdhk8pr2q.apps.googleusercontent.com';
     private static $clientSecret = '-bFJBmY-EhckJDplREV33vU9';
     private static $redirectGTM = '/installplugincallbackgtm/';
     private static $redirectGA = '/installplugincallbackga/';

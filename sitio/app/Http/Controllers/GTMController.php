@@ -17,13 +17,9 @@ class GTMController extends Controller
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
 
         if(!$task)
-            return \Redirect::to('/idcliente/'.$idcliente);
+            return \Redirect::to('/merchantid/'.$idcliente);
 
-        $client = Google::gtmClient();
-        $client = Google::autorizacionCode($client, $idcliente, 'ga_code', $task->ga_code);
-        $token = $client->getAccessToken()['access_token'];
-
-        return view($type)->with('task',$task)->with('token',$token);
-
+        return response(json_encode($task->gtmaccount), 200)
+            ->header('Content-Type', 'application/json');
     }
 }

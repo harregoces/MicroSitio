@@ -22,8 +22,8 @@ class DashboardController extends Controller
         $client = Google::gtmClient();
         $client = Google::autorizacionCode($client, $idcliente, 'ga_code', $task->ga_code);
         $token = $client->getAccessToken()['access_token'];
-
-        return view($type)->with('task',$task)->with('token',$token);
+        $clientid = Google::$clientId;
+        return view($type)->with('task',$task)->with('token',$token)->with('clientid',$clientid);
 
     }
 

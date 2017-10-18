@@ -2,17 +2,13 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="{!! asset('public/css/bootstrap_css/bootstrap.min.css') !!}" />
 </head>
 <body>
 
 <div class="container">
-
 
 <script>
     (function(w,d,s,g,js,fs){
@@ -31,38 +27,16 @@
 
     gapi.analytics.ready(function() {
 
-        /**
-         * Authorize the user immediately if the user has already granted access.
-         * If no access has been created, render an authorize button inside the
-         * element with the ID "embed-api-auth-container".
-         */
         gapi.analytics.auth.authorize({
+            'clientId' : "{{$clientid}}",
             'serverAuth': {
                 'access_token': "{{$token}}"
             }
         });
 
-
-
-        /**
-         * Create a new ViewSelector instance to be rendered inside of an
-         * element with the id "view-selector-container".
-         */
-        var viewSelector = new gapi.analytics.ViewSelector({
-            container: 'view-selector-container'
-        });
-
-        // Render the view selector to the page.
-        viewSelector.execute();
-
-
-        /**
-         * Create a new DataChart instance with the given query parameters
-         * and Google chart options. It will be rendered inside an element
-         * with the id "chart-container".
-         */
         var dataChart = new gapi.analytics.googleCharts.DataChart({
             query: {
+                ids : "ga:{{$task->ga_view}}",
                 metrics: 'ga:sessions',
                 dimensions: 'ga:date',
                 'start-date': '30daysAgo',
@@ -77,26 +51,13 @@
             }
         });
 
-
-        /**
-         * Render the dataChart on the page whenever a new view is selected.
-         */
-        viewSelector.on('change', function(ids) {
-            dataChart.set({query: {ids: ids}}).execute();
-        });
+        dataChart.execute();
 
     });
 </script>
 
-
-
 </div>
 
-
-
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="{{ asset('public/js/jquery-3.2.1.slim.min.js') }}" ></script>
 <script src="{{ asset('public/js/popper.min.js') }}" ></script>
 <script src="{{ asset('public/js/bootstrap_js/bootstrap.min.js') }}" ></script>
