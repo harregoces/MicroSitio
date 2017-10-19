@@ -145,7 +145,7 @@ class MainController extends Controller
         $idcliente = \Session::get('idcliente');
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
         $client = Google::gtmClient();
-        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
+        $client = Google::autorizacionCode($client, $idcliente, 'ga_code', $task->gtm_code);
         $account = (object) Google::getContainerGTM($client, $gtmaccount);
         $w = Google::getWorkspaceList($client,$account);
         return response()->json($w,200);
@@ -155,7 +155,7 @@ class MainController extends Controller
         $idcliente = \Session::get('idcliente');
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
         $client = Google::gaClient();
-        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
+        $client = Google::autorizacionCode($client, $idcliente, 'ga_code', $task->ga_code);
         $listProperty = Google::getPropertyGA($client, $account);
         return response()->json($listProperty,200);
     }
@@ -164,7 +164,7 @@ class MainController extends Controller
         $idcliente = \Session::get('idcliente');
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
         $client = Google::gaClient();
-        $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
+        $client = Google::autorizacionCode($client, $idcliente, 'ga_code', $task->ga_code);
         $listView = Google::getViewGA($client, $account,$property);
         return response()->json($listView,200);
     }

@@ -74,7 +74,8 @@ class Google {
         if ($client->isAccessTokenExpired() ) {
             $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
 
-            if( isset($client->getAccessToken()->access_token) ) {
+            $accessToken = $client->getAccessToken();
+            if( isset($accessToken['access_token']) ) {
                 $code = json_encode($client->getAccessToken());
                 DB::update('update tasks set '.$field.' = ? where idcliente = ?', [$code,$idcliente]);
             }
