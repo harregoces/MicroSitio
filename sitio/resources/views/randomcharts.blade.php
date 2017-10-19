@@ -115,35 +115,7 @@
             });
         });
 
-
-        /**
-         * Create a new ViewSelector2 instance to be rendered inside of an
-         * element with the id "view-selector-container".
-         */
-        var viewSelector = new gapi.analytics.ext.ViewSelector2({
-            container: 'view-selector-container',
-        })
-            .execute();
-
-
-        /**
-         * Update the activeUsers component, the Chartjs charts, and the dashboard
-         * title whenever the user changes the view.
-         */
-        viewSelector.on('viewChange', function(data) {
-            var title = document.getElementById('view-name');
-            title.textContent = data.property.name + ' (' + data.view.name + ')';
-
-            // Start tracking active users for this view.
-            activeUsers.set(data).execute();
-
-            // Render all the of charts for this view.
-            renderWeekOverWeekChart(data.ids);
-            renderYearOverYearChart(data.ids);
-            renderTopBrowsersChart(data.ids);
-            renderTopCountriesChart(data.ids);
-        });
-
+        activeUsers.set({'ids': "ga:{{$task->ga_view}}"}).execute();
 
         /**
          * Draw the a chart.js line chart with data from the specified view that
@@ -409,6 +381,11 @@
             div.appendChild(document.createTextNode(str));
             return div.innerHTML;
         }
+
+        renderWeekOverWeekChart("ga:{{$task->ga_view}}");
+        renderYearOverYearChart("ga:{{$task->ga_view}}");
+        renderTopBrowsersChart("ga:{{$task->ga_view}}");
+        renderTopCountriesChart("ga:{{$task->ga_view}}");
 
     });
 </script>
