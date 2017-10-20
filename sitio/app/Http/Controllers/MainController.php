@@ -55,9 +55,9 @@ class MainController extends Controller
         return \Redirect::to($_REQUEST['returnurl']);
     }
 
-    public function installPluginga(Request $request, $idcliente, $returnurl)
+    public function installPluginga(Request $request, $idcliente)
     {
-        $state = array("merchant_id"=>$idcliente, "returnurl"=>base64_decode($returnurl));
+        $state = array("merchant_id"=>$idcliente, "returnurl"=>$request->returnurl);
         $client = Google::gaClient(array("state"=> json_encode($state) ));
 
         $auth_url = $client->createAuthUrl();
@@ -88,7 +88,7 @@ class MainController extends Controller
 
     public function test(Request $request,$idcliente) {
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
-        $client = Google::gaClient($state);
+        $client = Google::gaClient();
         $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
 
         $account = Google::getGaAccounts($client);
@@ -97,11 +97,10 @@ class MainController extends Controller
 
     public function callbackPluginga(Request $request) {
         $ga_code = $_GET['code'];
-        $state = \GuzzleHttp\json_decode($_GET['state']);
-        $returnurl = $state->returnurl;
+
 
         $idcliente = \Session::get('idcliente');
-        $client = Google::gaClient($state);
+        $client = Google::gaClient();
         $ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
 
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
@@ -114,7 +113,11 @@ class MainController extends Controller
 
         //get the trackings id or account
         $account = Google::getGaAccounts($client);
-        return view('installPluginga')->with('listAccount',$account)->with('returnurl', $returnurl)->with('state', base64_encode(json_encode($state)));
+
+        $state = \GuzzleHttp\json_decode($_GET['state']);
+        $returnurl = $state->returnurl;
+
+        return view('installPluginga')->with('listAccount',$account)->with('returnurl', $returnurl);
     }
 
 
@@ -156,9 +159,8 @@ class MainController extends Controller
         return response()->json($w,200);
     }
 
-    public function getProperty(Request $request,$account, $state) {
+    public function getProperty(Request $request,$account) {
         $idcliente = \Session::get('idcliente');
-        $state = \GuzzleHttp\json_decode(base64_decode($state));
 
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
         $client = Google::gaClient();

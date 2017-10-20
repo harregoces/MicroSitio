@@ -41,7 +41,6 @@
                 </select>
 
                 <input type="hidden" name="returnurl" value="{{$returnurl}}">
-                <input type="hidden" name="state" value="{{$state}}">
 
             </div>
 
@@ -96,7 +95,7 @@
                 allowClear: true,
                 ajax: {
                     type: 'GET',
-                    url: '/getProperty/account/' + account + '/state/' + '{{$state}}',
+                    url: '/getProperty/account/' + account + '/',
                     processResults: function (data) {
                         var data = $.map(data, function (obj) {
                             obj.id = obj.id;
