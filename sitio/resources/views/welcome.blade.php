@@ -45,7 +45,7 @@
                     @elseif(isset($task) && $task->ga_code != null)
                         <p class="alert-info">!El plugin ya esta instalado</p>
                     @else
-                        <a href="/installpluginga/" class="card-link">Instalar</a>
+                        <a href="/installpluginga/merchantid/{{$idcliente}}/returnurl/aHR0cDovL21pY3Jvc2l0aW8uY29tL21lcmNoYW50aWQvMTAvP3JldHVybmVk" class="card-link">Instalar</a>
                     @endif
                 </div>
             </div>

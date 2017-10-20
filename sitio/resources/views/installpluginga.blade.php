@@ -40,6 +40,9 @@
                     <option value ="">Por favor, seleccione una propiedad primero</option>
                 </select>
 
+                <input type="hidden" name="returnurl" value="{{$returnurl}}">
+                <input type="hidden" name="state" value="{{$state}}">
+
             </div>
 
             <div>
@@ -93,7 +96,7 @@
                 allowClear: true,
                 ajax: {
                     type: 'GET',
-                    url: '/getProperty/account/' + account,
+                    url: '/getProperty/account/' + account + '/state/' + '{{$state}}',
                     processResults: function (data) {
                         var data = $.map(data, function (obj) {
                             obj.id = obj.id;

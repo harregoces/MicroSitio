@@ -26,7 +26,10 @@ Route::get('/installplugingtm','MainController@installPlugingtm');
 Route::get('/installplugingtm2','MainController@installPlugingtm2');
 Route::post('/installplugingtm3','MainController@installPlugingtm3');
 
-Route::get('/installpluginga','MainController@installPluginga');
+//Route::get('/installpluginga','MainController@installPluginga');
+
+Route::get('/installpluginga/merchantid/{idcliente}/returnurl/{returnurl}','MainController@installPluginga');
+
 Route::post('/installpluginga2','MainController@installPluginga2');
 Route::get('/installpluginga3','MainController@installPluginga3');
 
@@ -46,7 +49,7 @@ Route::get('/dashboardiframes/merchantid/{idcliente}/', 'DashboardController@das
 Route::get('/test/merchantid/{idcliente}', 'MainController@test');
 Route::get('/getWorspace/gtmaccount/{gtmaccount}', 'MainController@getWorkspace');
 
-Route::get('/getProperty/account/{account}', 'MainController@getProperty');
+Route::get('/getProperty/account/{account}/state/{state}', 'MainController@getProperty');
 Route::get('/getView/account/{account}/property/{property}', 'MainController@getView');
 
 
