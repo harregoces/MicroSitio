@@ -10,15 +10,18 @@ namespace App;
 
 use Illuminate\Support\Facades\DB;
 
-class Google {
+class Google
+{
 
-    private static $applicationName  = 'Web client OAuth';
+    private static $applicationName = 'Web client OAuth';
     public static $clientId = '349982058915-lqccda1kbqmdstrn6nm50b0qdhk8pr2q.apps.googleusercontent.com';
     private static $clientSecret = '-bFJBmY-EhckJDplREV33vU9';
     private static $redirectGTM = '/installplugincallbackgtm/';
     private static $redirectGA = '/installplugincallbackga/';
     private static $json_config = '{"web":{"client_id":"349982058915-lqccda1kbqmdstrn6nm50b0qdhk8pr2q.apps.googleusercontent.com","project_id":"aplicacionbase","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"-bFJBmY-EhckJDplREV33vU9","redirect_uris":["http://micrositio.com/installplugincallbackgtm/","http://micrositio.com/installplugincallbackga/"],"javascript_origins":["http://micrositio.com"]}}';
     private static $TRIGGER_ID_ALL_PAGES = "2147479553";
+
+    private static $UAT_name = "Universal Analytics Tag";
 
     public static function gtmClient() {
         $google_client = new \Google_Client();
@@ -147,6 +150,20 @@ class Google {
 
     public static function getGTMGoogleAnalyticsTag(\Google_Client $client, $trackingid, $GTMAccount,$workspace){
 
+        //check if the universal Analitic tag is already created
+        $service = new \Google_Service_TagManager($client);
+        $list = $service->accounts_containers_workspaces_tags->listAccountsContainersWorkspacesTags($workspace);
+        foreach($list as $key => $val){
+            if($val->getName() == self::$UAT_name) {
+                return $val->getTagId();
+            }
+        }
+
+        return self::createGTMGoogleAnalyticsTag($client, $trackingid, $GTMAccount,$workspace);
+    }
+
+    public static function createGTMGoogleAnalyticsTag(\Google_Client $client, $trackingid, $GTMAccount,$workspace){
+
         $tag = new \Google_Service_TagManager_Tag();
         $tag->setPath($GTMAccount->containerPath);
         $tag->setAccountId($GTMAccount->accountId);
@@ -157,7 +174,7 @@ class Google {
         $tag->setWorkspaceId( $wor );
 
         $tag->setTagId(null);
-        $tag->setName("Universal Analytics Tag");
+        $tag->setName(self::$UAT_name);
         $tag->setType('ua');
         $tag->setFiringTriggerId(array(self::$TRIGGER_ID_ALL_PAGES));
         $tag->setLiveOnly(false);
@@ -224,6 +241,11 @@ class Google {
 
     }
 
+
+
+
+
+    /** For ajax functions */
     public static function getWorkspaceList(\Google_Client $client, $GTMAccount) {
         $service = new \Google_Service_TagManager($client);
         $workspaceList = $service->accounts_containers_workspaces->listAccountsContainersWorkspaces($GTMAccount->containerPath);
