@@ -50,9 +50,9 @@ class MainController extends Controller
         //create tag
         $client = Google::gaClient();
         $client = Google::autorizacionCode($client, $idcliente, 'gtm_code', $task->gtm_code);
-        Google::getGTMGoogleAnalyticsTag($client, $property, json_decode($task->gtmaccount),$task->workspaceid);
+        $response = Google::getGTMGoogleAnalyticsTag($client, $property, json_decode($task->gtmaccount),$task->workspaceid);
 
-        return \Redirect::to($_REQUEST['returnurl']);
+        return \Redirect::to($_REQUEST['returnurl']."?message=".json_encode($response));
     }
 
     public function installPluginga(Request $request, $idcliente)
@@ -98,12 +98,24 @@ class MainController extends Controller
     public function callbackPluginga(Request $request) {
         $ga_code = $_GET['code'];
 
-
         $idcliente = \Session::get('idcliente');
         $client = Google::gaClient();
-        $ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
+        $ga_code = $client->fetchAccessTokenWithAuthCode($ga_code) ;
+
+        $state = \GuzzleHttp\json_decode($_GET['state']);
+        $returnurl = $state->returnurl;
+
+        if(!empty($ga_code['error']))
+        {
+            $returnurl .= "?errorMessage={$ga_code['error_description']}";
+            header('Location: ' . filter_var($returnurl, FILTER_SANITIZE_URL));
+            exit;
+            //return view('welcome')->with('errorMessage',$account)->with('returnurl', $returnurl);
+        }
 
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+
+        $ga_code = json_encode($ga_code);
 
         if(!$task) {
             DB::insert('insert into tasks (idcliente,ga_code) values (?, ?)', [$idcliente, $ga_code]);
@@ -111,12 +123,8 @@ class MainController extends Controller
             DB::update('update tasks set ga_code = ? where idcliente = ?', [$ga_code,$idcliente]);
         }
 
-        //get the trackings id or account
         $account = Google::getGaAccounts($client);
-
-        $state = \GuzzleHttp\json_decode($_GET['state']);
-        $returnurl = $state->returnurl;
-
+        //get the trackings id or account
         return view('installPluginga')->with('listAccount',$account)->with('returnurl', $returnurl);
     }
 
