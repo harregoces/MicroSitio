@@ -21,7 +21,7 @@ class Google
     private static $json_config = '{"web":{"client_id":"349982058915-lqccda1kbqmdstrn6nm50b0qdhk8pr2q.apps.googleusercontent.com","project_id":"aplicacionbase","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"-bFJBmY-EhckJDplREV33vU9","redirect_uris":["http://micrositio.com/installplugincallbackgtm/","http://micrositio.com/installplugincallbackga/"],"javascript_origins":["http://micrositio.com"]}}';
     private static $TRIGGER_ID_ALL_PAGES = "2147479553";
 
-    private static $UAT_name = "Universal Analytics Tag";
+    private static $UAT_name = "Universal Analytics Coordiutil";
 
     public static function gtmClient() {
         $google_client = new \Google_Client();
@@ -159,7 +159,7 @@ class Google
             }
         }
 
-        return self::createGTMGoogleAnalyticsTag($client, $trackingid, $GTMAccount,$workspace)->getTagId();
+        return self::createGTMGoogleAnalyticsTag($client, $trackingid, $GTMAccount,$workspace);
     }
 
     public static function createGTMGoogleAnalyticsTag(\Google_Client $client, $trackingid, $GTMAccount,$workspace){
@@ -178,7 +178,7 @@ class Google
         $tag->setType('ua');
         $tag->setFiringTriggerId(array(self::$TRIGGER_ID_ALL_PAGES));
         $tag->setLiveOnly(false);
-        $tag->setFingerprint('1463140767472');
+        $tag->setFingerprint('1463140767473');
         $tag->setTagFiringOption('oncePerEvent');
 
         $parameters = array(
@@ -240,8 +240,6 @@ class Google
         return $service->accounts_containers_workspaces_tags->create($workspace, $tag);
 
     }
-
-
 
 
 

@@ -57,7 +57,7 @@ class MainController extends Controller
         proccessCreationAllTagsElements($client, $task->ga_property, json_decode($task->gtmaccount), $task->workspaceid);
 
         $returnurl = json_decode(urldecode($_REQUEST['returnurl']));
-        if(isset($returnurl->returnurl)) $returnurl = $returnurl->returnurl.'/'.$returnurl->merchant_id;
+        if(isset($returnurl->returnurl)) $returnurl = $returnurl->returnurl.'/'.$returnurl->merchant_id."?message=".json_encode($tagId));
         else $returnurl = '/merchantid/'.$idcliente;
 
         return \Redirect::to($returnurl);
@@ -72,6 +72,7 @@ class MainController extends Controller
         header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
         exit;
     }
+
 
     public function callbackPlugingtm(Request $request) {
         $gtm_code = $_GET['code'];
@@ -98,9 +99,22 @@ class MainController extends Controller
 
         $idcliente = \Session::get('idcliente');
         $client = Google::gaClient();
-        $ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
+        //$ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
 
+        $state = \GuzzleHttp\json_decode($_GET['state']);
+        $returnurl = $state->returnurl;
+
+        if(!empty($ga_code['error']))
+        {
+            $returnurl .= "?errorMessage={$ga_code['error_description']}";
+            header('Location: ' . filter_var($returnurl, FILTER_SANITIZE_URL));
+            exit;
+            //return view('welcome')->with('errorMessage',$account)->with('returnurl', $returnurl);
+        }
+        
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
+
+        $ga_code = json_encode($ga_code);
 
         if(!$task) {
             DB::insert('insert into tasks (idcliente,ga_code) values (?, ?)', [$idcliente, $ga_code]);
