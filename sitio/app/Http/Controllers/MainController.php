@@ -57,7 +57,7 @@ class MainController extends Controller
         proccessCreationAllTagsElements($client, $task->ga_property, json_decode($task->gtmaccount), $task->workspaceid);
 
         $returnurl = json_decode(urldecode($_REQUEST['returnurl']));
-        if(isset($returnurl->returnurl)) $returnurl = $returnurl->returnurl.'/'.$returnurl->merchant_id."?message=".json_encode($tagId));
+        if(isset($returnurl->returnurl)) $returnurl = $returnurl->returnurl.'/'.$returnurl->merchant_id."?message=".json_encode($tagId);
         else $returnurl = '/merchantid/'.$idcliente;
 
         return \Redirect::to($returnurl);
