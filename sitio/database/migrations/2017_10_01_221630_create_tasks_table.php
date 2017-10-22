@@ -23,6 +23,7 @@ class CreateTasksTable extends Migration
             $table->string('ga_account')->nullable();
             $table->string('ga_property')->nullable();
             $table->string('ga_view')->nullable();
+            $table->string('uat_id')->nullable();
             $table->timestamps();
         });
     }
