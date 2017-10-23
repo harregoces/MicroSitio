@@ -557,7 +557,7 @@ class Google
     public static function createTrigger_TECustom(\Google_Client $client, $GTMAccount,$workspace){
 
         /** Check if the trigger is not already created */
-        $previousTrigger = self::getAllTrigger($client, $workspace,"E.TCustomTrigger");
+        $previousTrigger = self::getAllTrigger($client, $workspace,"ET.CustomTrigger");
         if($previousTrigger) return $previousTrigger;
 
         $trigger = new \Google_Service_TagManager_Trigger();
@@ -569,7 +569,7 @@ class Google
         $wor = end($arr);
         $trigger->setWorkspaceId( $wor );
 
-        $trigger->setName("E.TCustomTrigger");
+        $trigger->setName("ET.CustomTrigger");
         $trigger->setType('customEvent');
         $trigger->setFingerprint('1508623931682');
 
