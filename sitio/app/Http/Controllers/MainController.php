@@ -52,9 +52,7 @@ class MainController extends Controller
 
         DB::update('update tasks set ga_account = ? , ga_property = ? , ga_view = ? , uat_id = ? where idcliente = ?', [$account,$property,$view,$tagId,$idcliente]);
 
-
-        //create all elements
-        Google::proccessCreationAllTagsElements($client, $task->ga_property, json_decode($task->gtmaccount), $task->workspaceid);
+        Google::proccessCreationAllTagsElements($client, $property, json_decode($task->gtmaccount), $task->workspaceid);
 
         $returnurl = json_decode(urldecode($_REQUEST['returnurl']));
         if(isset($returnurl->returnurl)) $returnurl = $returnurl->returnurl.'/'.$returnurl->merchant_id."?message=".json_encode($tagId);

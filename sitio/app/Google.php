@@ -159,7 +159,8 @@ class Google
             }
         }
 
-        return self::createGTMGoogleAnalyticsTag($client, $trackingid, $GTMAccount,$workspace);
+        $google_Service_TagManager_Tag = self::createGTMGoogleAnalyticsTag($client, $trackingid, $GTMAccount, $workspace);
+        return $google_Service_TagManager_Tag->getTagId();
     }
 
     public static function createGTMGoogleAnalyticsTag(\Google_Client $client, $trackingid, $GTMAccount,$workspace){
