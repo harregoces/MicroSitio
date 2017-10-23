@@ -54,7 +54,7 @@ class MainController extends Controller
 
 
         //create all elements
-        proccessCreationAllTagsElements($client, $task->ga_property, json_decode($task->gtmaccount), $task->workspaceid);
+        Google::proccessCreationAllTagsElements($client, $task->ga_property, json_decode($task->gtmaccount), $task->workspaceid);
 
         $returnurl = json_decode(urldecode($_REQUEST['returnurl']));
         if(isset($returnurl->returnurl)) $returnurl = $returnurl->returnurl.'/'.$returnurl->merchant_id."?message=".json_encode($tagId);
@@ -99,7 +99,7 @@ class MainController extends Controller
 
         $idcliente = \Session::get('idcliente');
         $client = Google::gaClient();
-        //$ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
+        $ga_code = json_encode($client->fetchAccessTokenWithAuthCode($ga_code)) ;
 
         $state = \GuzzleHttp\json_decode($_GET['state']);
         $returnurl = $state->returnurl;
