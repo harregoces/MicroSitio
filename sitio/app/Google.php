@@ -23,7 +23,7 @@ class Google
 
     private static $UAT_name = "Universal Analytics Coordiutil";
 
-    public static function gtmClient() {
+    public static function gtmClient($state=null) {
         $google_client = new \Google_Client();
         $google_client->setAuthConfig( json_decode(self::$json_config,true) );
         $google_client->setApplicationName(self::$applicationName);
@@ -32,6 +32,9 @@ class Google
         $google_client->setRedirectUri('http://'.$_SERVER['HTTP_HOST'].self::$redirectGTM);
         $google_client->setIncludeGrantedScopes(true);
         $google_client->setAccessType('offline');
+        if($state){
+            $google_client->setState($state);
+        }
         $google_client->setApprovalPrompt("force");
         $google_client->addScope(
             array(

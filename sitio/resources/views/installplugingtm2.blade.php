@@ -39,6 +39,9 @@
             <option value ="">Por favor, seleccione una cuenta primero</option>
         </select>
 
+        <input type="hidden" name="returnurl" value="{{$returnurl}}">
+        <input type="hidden" name="merchant_id" value="{{$merchant_id}}">
+
     </div>
 
     <div>
@@ -85,7 +88,7 @@
                 allowClear: true,
                 ajax: {
                     type: 'GET',
-                    url: '/getWorspace/gtmaccount/' + gtmaccount,
+                    url: '/getWorspace/gtmaccount/' + gtmaccount + '?merchant_id={{$merchant_id}}',
                     processResults: function (data) {
                         var data = $.map(data, function (obj) {
                             obj.id = obj.path;

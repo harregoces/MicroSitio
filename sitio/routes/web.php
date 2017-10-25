@@ -22,7 +22,7 @@ Route::get('/', function(){
 Route::get('/merchantid/{idcliente}', 'MainController@index');
 
 
-Route::get('/installplugingtm','MainController@installPlugingtm');
+Route::get('/installplugingtm/merchantid/{idcliente}/{returnurl?}pwd','MainController@installPlugingtm');
 Route::get('/installplugingtm2','MainController@installPlugingtm2');
 Route::post('/installplugingtm3','MainController@installPlugingtm3');
 

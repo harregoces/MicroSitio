@@ -25,7 +25,7 @@
                     @if(isset($task) && $task->gtm_code != null)
                         <p class="alert-info">!El plugin ya esta instalado</p>
                     @else
-                        <a href="/installplugingtm/" class="card-link">Instalar</a>
+                        <a href="/installplugingtm/merchantid/{{$idcliente}}/?returnurl=http%3A%2F%2Fmicrositio.com%2Fmerchantid%2F{{$idcliente}}%2F%3Freturned" class="card-link">Instalar</a>
                     @endif
 
                 </div>

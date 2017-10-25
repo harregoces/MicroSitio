@@ -195,8 +195,14 @@ http://micrositio.com/getgtmaccountbyid/{merchantid}
 http://micrositio.com/getgtmaccountbyid/172
 
 5. Para ver las graficas las url deben ser de la siguiente manera
+http://micrositio.com/dashboard/merchantid/200/
+
 http://micrositio.com/dashboard/merchantid/{merchantid}/type/{tipo_grafico}
 http://micrositio.com/dashboard/merchantid/172/type/basic
+
+6. En el siguiente link se muestran ejemplos de inclusión de las dashboards
+
+http://micrositio.com/dashboardiframes/merchantid/200
 
 tipos de graficos disponibles
 basic

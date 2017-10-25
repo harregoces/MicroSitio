@@ -41,6 +41,7 @@
                 </select>
 
                 <input type="hidden" name="returnurl" value="{{$returnurl}}">
+                <input type="hidden" name="merchant_id" value="{{$merchant_id}}">
 
             </div>
 
@@ -95,7 +96,7 @@
                 allowClear: true,
                 ajax: {
                     type: 'GET',
-                    url: '/getProperty/account/' + account + '/',
+                    url: '/getProperty/account/' + account + '/?merchant_id={{$merchant_id}}',
                     processResults: function (data) {
                         var data = $.map(data, function (obj) {
                             obj.id = obj.id;
@@ -118,7 +119,7 @@
                     allowClear: true,
                     ajax: {
                         type: 'GET',
-                        url: '/getView/account/' + account+'/property/'+property,
+                        url: '/getView/account/' + account+'/property/'+property+ '/?merchant_id={{$merchant_id}}',
                         processResults: function (data) {
                             var data = $.map(data, function (obj) {
                                 obj.id = obj.id;
