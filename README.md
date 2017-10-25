@@ -194,20 +194,27 @@ http://micrositio.com/merchantid/172
 http://micrositio.com/getgtmaccountbyid/{merchantid}
 http://micrositio.com/getgtmaccountbyid/172
 
-5. Para ver las graficas las url deben ser de la siguiente manera
+5. Para acceder a todas las gráficas disponibles, las url deben ser de la siguiente manera:
+http://micrositio.com/dashboard/merchantid/{merchantid}/
 http://micrositio.com/dashboard/merchantid/200/
 
-http://micrositio.com/dashboard/merchantid/{merchantid}/type/{tipo_grafico}
-http://micrositio.com/dashboard/merchantid/172/type/basic
+6. Para acceder a un gráfico en particular, para por ejemplo embeberlo como iframe, se puede acceder a través del siguiente link
 
-6. En el siguiente link se muestran ejemplos de inclusión de las dashboards
+http://micrositio.com/dashboard/merchantid/{merchantid}/type/{tipo_grafico}
+http://micrositio.com/dashboard/merchantid/200/type/sessionspie
+
+7. Los tipos de gráficos disponibles son:
+
+* sessionspie
+* sessionspercountrypie
+* sessionsperbrowser
+* thisweeklastweekbysessions
+* activeusers
+* thisyearlastyearbyusers
+* topbrowsersbypageviewpie
+* topcountriesbysessionspie
+* randomcharts
+
+8. En la siguiente URL es posible ver un ejemplo de gráficos embebidos en iframes:
 
 http://micrositio.com/dashboardiframes/merchantid/200
-
-tipos de graficos disponibles
-basic
-multiple
-thirdparty
-tvisualitationc
-wcompmonent
-
