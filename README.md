@@ -188,20 +188,20 @@ Instale el paquete usando el procedimiento estàndard de su sistema operativo ma
 3. Verificar la instalaciòn.
 Para verificar la instalaciòn del sitio web, navegar a la siguiente direcciòn en el browser de preferencia
 http://micrositio.com/merchantid/{merchantid}
-http://micrositio.com/merchantid/172
+Ejemplo: http://micrositio.com/merchantid/172
 
 4. Para leer los datos del google tag manager account se usa la url
 http://micrositio.com/getgtmaccountbyid/{merchantid}
-http://micrositio.com/getgtmaccountbyid/172
+Ejemplo: http://micrositio.com/getgtmaccountbyid/172
 
 5. Para acceder a todas las gráficas disponibles, las url deben ser de la siguiente manera:
 http://micrositio.com/dashboard/merchantid/{merchantid}/
-http://micrositio.com/dashboard/merchantid/200/
+Ejemplo: http://micrositio.com/dashboard/merchantid/200/
 
 6. Para acceder a un gráfico en particular, para por ejemplo embeberlo como iframe, se puede acceder a través del siguiente link
 
 http://micrositio.com/dashboard/merchantid/{merchantid}/type/{tipo_grafico}
-http://micrositio.com/dashboard/merchantid/200/type/sessionspie
+Ejemplo: http://micrositio.com/dashboard/merchantid/200/type/sessionspie
 
 7. Los tipos de gráficos disponibles son:
 
@@ -218,3 +218,14 @@ http://micrositio.com/dashboard/merchantid/200/type/sessionspie
 8. En la siguiente URL es posible ver un ejemplo de gráficos embebidos en iframes:
 
 http://micrositio.com/dashboardiframes/merchantid/200
+
+9. Si se requiere redireccionar el usuario directamente a los workflows de OAuth2 de GTM, se puede redireccionar a través de la siguiente URL:
+
+http://micrositio.com/installplugingtm/merchantid/{merchantid}/?returnurl={returnurl}
+Ejemplo: http://micrositio.com/installplugingtm/merchantid/200/?returnurl=http%3A%2F%2Fmicrositio.com%2Fmerchantid%2F202%2F%3Freturned
+
+9. Una vez instalado GTM, Si se requiere redireccionar el usuario directamente a los workflows de OAuth2 de Google Analytics, se puede redireccionar a través de la siguiente URL:
+
+http://micrositio.com/installpluginga/merchantid/{merchantid}/?returnurl={returnurl}
+Ejemplo: http://micrositio.com/installpluginga/merchantid/200/?returnurl=http%3A%2F%2Fmicrositio.com%2Fmerchantid%2F202%2F%3Freturned
+
