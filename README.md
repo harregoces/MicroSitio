@@ -229,3 +229,6 @@ Ejemplo: http://micrositio.com/installplugingtm/merchantid/200/?returnurl=http%3
 http://micrositio.com/installpluginga/merchantid/{merchantid}/?returnurl={returnurl}
 Ejemplo: http://micrositio.com/installpluginga/merchantid/200/?returnurl=http%3A%2F%2Fmicrositio.com%2Fmerchantid%2F202%2F%3Freturned
 
+10. Para desinstalar GTM y GA es posible acceder directamente al siguiente link
+http://micrositio.com/uninstall/merchantid/{merchantid}/
+Ejemplo: http://micrositio.com/uninstall/merchantid/202/

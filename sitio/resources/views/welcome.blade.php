@@ -50,6 +50,11 @@
                 </div>
             </div>
         </div>
+
+    </div>
+
+    <div class="row top10">
+        <a href="/uninstall/merchantid/{{$idcliente}}/" class="card-link">Desinstalar</a>
     </div>
 
 </div>

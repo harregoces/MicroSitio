@@ -29,6 +29,14 @@ class MainController extends Controller
         return view('welcome')->with('task',$task)->with('idcliente',$idcliente);
     }
 
+    public function uninstall(Request $request, $idcliente)
+    {
+        //\Session::put('idcliente',$idcliente);
+        DB::table('tasks')->where('idcliente',$idcliente)->delete();
+        header('Location: ' . filter_var("/merchantid/{$idcliente}", FILTER_SANITIZE_URL));
+        exit;
+    }
+
     public function installPlugingtm(Request $request, $idcliente)
     {
         $state = array("merchant_id"=>$idcliente, "returnurl"=>$request->returnurl);

@@ -22,6 +22,8 @@ Route::get('/', function(){
 Route::get('/merchantid/{idcliente}', 'MainController@index');
 
 
+Route::get('/uninstall/merchantid/{idcliente}','MainController@uninstall');
+
 Route::get('/installplugingtm/merchantid/{idcliente}/{returnurl?}','MainController@installPlugingtm');
 Route::get('/installplugingtm2','MainController@installPlugingtm2');
 Route::post('/installplugingtm3','MainController@installPlugingtm3');
