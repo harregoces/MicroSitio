@@ -55,8 +55,7 @@ Route::get('/getProperty/account/{account}/{returnurl?}', 'MainController@getPro
 Route::get('/getView/account/{account}/property/{property}', 'MainController@getView');
 
 
-
-Route::get('/getgtmaccountbyid/{merchantid}', 'GTMController@getGtmAccount');
+Route::get('/getmerchantaccountbyid/{merchantid}', 'GTMController@getMerchantAccountById');
 
 /*
 Route::get('/getgtmaccountbyid/{merchantid}', function ($merchantid) {

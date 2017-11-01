@@ -12,14 +12,23 @@ use Illuminate\Support\Facades\DB;
 class GTMController extends Controller
 {
 
-    public function getGtmAccount(Request $request, $idcliente) {
+    public function getMerchantAccountById(Request $request, $idcliente) {
 
         $task = DB::table('tasks')->where('idcliente',$idcliente)->first();
 
-        if(!$task)
-            return \Redirect::to('/merchantid/'.$idcliente);
+        $response = array();
 
-        return response(json_encode($task->gtmaccount), 200)
+        if(!$task){
+            $response['code'] = "NOT_INSTALLED";
+            $response['container'] = null;
+
+            return response(json_encode($response), 200)
+                ->header('Content-Type', 'application/json');
+        }
+
+        $response['code'] = "INSTALLED";
+        $response['container'] = $task;
+        return response(json_encode($response), 200)
             ->header('Content-Type', 'application/json');
     }
 }

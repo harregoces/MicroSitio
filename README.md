@@ -191,8 +191,34 @@ http://micrositio.com/merchantid/{merchantid}
 Ejemplo: http://micrositio.com/merchantid/172
 
 4. Para leer los datos del google tag manager account se usa la url
-http://micrositio.com/getgtmaccountbyid/{merchantid}
-Ejemplo: http://micrositio.com/getgtmaccountbyid/172
+http://micrositio.com/getmerchantaccountbyid/{merchantid}
+Ejemplo: http://micrositio.com/getmerchantaccountbyid/172
+
+Si GTM está instalado, se retorna un JSON como el siguiente:
+
+{
+    "code": "INSTALLED",
+    "container": {
+        "id": 5,
+        "idcliente": 202,
+        "gtm_code": "{\"access_token\":\"ya29.Glv2BLnupQgGLzFF_UxZ_dkK3-d-g_srXjo3GzOP0ajCJw4J0i5sbSUYQ1oqpR1qvuozwc_xruuhjtk0o80GKe7_62wuazL4GlWHalNyNno4Czlsw9WrY3SjUWrJ\",\"token_type\":\"Bearer\",\"expires_in\":3600,\"refresh_token\":\"1\\\/tBMZwfL0mmGUjd308Vmi9UTkKG4yLpT18gDK59Ujm6NhSMY8bZPXCjFtzBXDjqPm\",\"created\":1509519539}",
+        "ga_code": "\"{\\\"access_token\\\":\\\"ya29.Glv2BBA35fVUBBKgbcYx2nT7u1hIiL2go0D37XDVozsjWFrihWiZJsWkA0X41_N687GkQgSWfiufcAywKG9u5EF9citOLnpC-9F692yZbTdnBtMlNhliV-2CDAEl\\\",\\\"token_type\\\":\\\"Bearer\\\",\\\"expires_in\\\":3600,\\\"refresh_token\\\":\\\"1\\\\\\\/2blSk1eGCSD_XH8O7VzsYWOo4dxiBJ8suodMAYNXdeU\\\",\\\"created\\\":1509519559}\"",
+        "gtmaccount": "{\"containerId\":\"7728507\",\"containerName\":\"nutmeg.com\",\"containerPath\":\"accounts\\\/1607827098\\\/containers\\\/7728507\",\"publicId\":\"GTM-TDNHJSS\",\"accountId\":\"1607827098\"}",
+        "workspaceid": "accounts\/1607827098\/containers\/7728507\/workspaces\/8",
+        "ga_account": "86175990",
+        "ga_property": "UA-86175990-1",
+        "ga_view": "132136873",
+        "uat_id": "14",
+        "created_at": null,
+        "updated_at": null
+    }
+}
+
+En caso de que Google Analytics esté instalado, dentro del JSON se puede leer la cuenta de Analytics instalada, dentro de la propiedad ga_property.
+ 
+Si GTM no está instalado, el servicio devolverá el siguiente JSON:
+  
+{"code":"NOT_INSTALLED","container":null}
 
 5. Para acceder a todas las gráficas disponibles, las url deben ser de la siguiente manera:
 http://micrositio.com/dashboard/merchantid/{merchantid}/
