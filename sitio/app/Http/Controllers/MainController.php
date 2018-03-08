@@ -143,7 +143,7 @@ class MainController extends Controller
         //get the trackings id or account
         $account = Google::getGaAccounts($client);
 
-        return view('installPluginga')->with('listAccount',$account)->with('returnurl', $returnurl)->with('merchant_id',$idcliente);
+        return view('installpluginga')->with('listAccount',$account)->with('returnurl', $returnurl)->with('merchant_id',$idcliente);
     }
 
     public function installPlugingtm2(Request $request)
